@@ -4,7 +4,11 @@
       "Bash(file:*)",
       "Bash(find:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nPremier commit - WebPrime 77 Seine-et-Marne\n\nSite vitrine pour agence web ciblant le département 77.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)"
     ]
   }
 }
