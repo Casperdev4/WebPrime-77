@@ -280,7 +280,6 @@
                 </div>
             </div>
 
-            <!-- Trustindex Google Reviews -->
             <div style="margin-top: 3rem;">
                 <script defer async src='https://cdn.trustindex.io/loader.js?d16319a6414173621196886d3d8'></script>
             </div>
@@ -841,13 +840,11 @@
         </div>
     </section>
 
-    <!-- Bouton flottant roue -->
     <button class="wheel-trigger" id="wheelTrigger">
         <span class="wheel-icon">🎁</span>
         <span class="wheel-text">Tentez votre chance !</span>
     </button>
 
-    <!-- Modal Roue de la fortune -->
     <div class="wheel-modal" id="wheelModal">
         <div class="wheel-modal-content">
             <button class="wheel-close" id="wheelClose">&times;</button>
@@ -965,7 +962,6 @@
                 }
             });
 
-            // Particules flottantes
             const canvas = document.getElementById('particles');
             const ctx = canvas.getContext('2d');
             let particles = [];
@@ -1018,7 +1014,6 @@
                 createParticles();
             });
 
-            // Effet typing
             const typingText = document.querySelector('.typing-text');
             const text = 'Bienvenue chez WebPrime';
             let index = 0;
@@ -1033,7 +1028,6 @@
 
             setTimeout(typeWriter, 400);
 
-            // Effet typing sur les titres au scroll
             const typingTitles = document.querySelectorAll('.typing-title');
 
             function typeTitle(element) {
@@ -1080,7 +1074,6 @@
                 titleObserver.observe(title);
             });
 
-            // Roue de la fortune
             const wheelTrigger = document.getElementById('wheelTrigger');
             const wheelModal = document.getElementById('wheelModal');
             const wheelClose = document.getElementById('wheelClose');
@@ -1095,21 +1088,21 @@
             const wheelCtx = wheelCanvas.getContext('2d');
 
             const segments = [
-                { text: '-15€/mois', color: '#FF6600' },
+                { text: '-50€/mois', color: '#FF6600' },
                 { text: '-10€/mois', color: '#1a1a1a' },
                 { text: 'GROS LOT', color: '#FFD700', glow: true },
                 { text: '-20€/mois', color: '#e09a40' },
-                { text: '-15€/mois', color: '#FF6600' },
+                { text: '-50€/mois', color: '#FF6600' },
                 { text: '-10€/mois', color: '#1a1a1a' },
                 { text: 'GROS LOT', color: '#FFD700', glow: true },
                 { text: '-20€/mois', color: '#e09a40' }
             ];
 
             const weights = {
-                '-10€/mois': 35,
-                '-20€/mois': 35,
-                '-15€/mois': 15,
-                'GROS LOT': 15
+                '-10€/mois': 7,
+                '-20€/mois': 7,
+                '-50€/mois': 6,
+                'GROS LOT': 80
             };
 
             function getWeightedPrize() {
@@ -1222,9 +1215,7 @@
                         requestAnimationFrame(animate);
                     } else {
                         isSpinning = false;
-                        let normalizedRotation = currentRotation % (2 * Math.PI);
-                        const winningIndex = Math.floor((segments.length - normalizedRotation / segmentAngle) + segments.length) % segments.length;
-                        currentPrize = segments[winningIndex].text;
+                        currentPrize = selectedPrize;
                         setTimeout(showPrizeForm, 1000);
                     }
                 }
@@ -1238,15 +1229,35 @@
                 const priceInput = document.getElementById('prizePrice');
 
                 if (currentPrize === 'GROS LOT') {
-                    prizeText.innerHTML = 'Site internet offert !<span class="prize-note">Pour le suivi mensuel, choisissez votre prix !</span>';
-                    priceInput.style.display = 'block';
-                    priceInput.required = true;
-                    priceInput.placeholder = 'Votre prix mensuel';
+                    prizeForm.style.display = 'none';
+                    const formText = wheelForm.querySelector('.wheel-form-text');
+                    if (formText) formText.style.display = 'none';
+                    prizeText.innerHTML = 'Pack 1ère page Google' + '<span class="prize-note">35€/mois au lieu de <s>156€/mois</s> • Sans engagement</span>';
+                    var offerList = document.createElement('div');
+                    offerList.style.cssText = 'text-align:left;margin:15px 0;font-size:0.85rem;line-height:1.8;color:#d1d5db;';
+                    offerList.innerHTML = '<span style="color:#f97316;">✔</span> Création site internet 100% codé<br><span style="color:#f97316;">✔</span> Pages illimitées<br><span style="color:#f97316;">✔</span> Nom de domaine + Hébergement<br><span style="color:#f97316;">✔</span> Référencement naturel SEO (1ère page Google)<br><span style="color:#f97316;">✔</span> Référencement page Google My Business<br><span style="color:#f97316;">✔</span> Modifications illimitées<br><span style="color:#f97316;">✔</span> Formulaire de contact<br><span style="color:#f97316;">✔</span> Service clients 24h/24';
+                    prizeText.after(offerList);
+                    var callMsg = document.createElement('p');
+                    callMsg.style.cssText = 'color:#22c55e;font-size:0.9rem;margin:10px 0;';
+                    callMsg.textContent = '📞 Nous vous appelons dans l\'heure qui suit votre paiement.';
+                    offerList.after(callMsg);
+                    var stripeBtn = document.createElement('a');
+                    stripeBtn.href = 'https://buy.stripe.com/4gM5kEbia2Qm58FfDDgYU0b';
+                    stripeBtn.className = 'wheel-submit-btn';
+                    stripeBtn.textContent = 'Souscrire maintenant';
+                    stripeBtn.style.cssText = 'display:block;text-align:center;text-decoration:none;margin-top:10px;';
+                    callMsg.after(stripeBtn);
+                    var urgencyNote = document.createElement('p');
+                    urgencyNote.style.cssText = 'color:#f97316;font-size:0.8rem;margin-top:10px;';
+                    urgencyNote.textContent = '⚠️ En quittant cette page, l\'offre ne sera plus disponible.';
+                    stripeBtn.after(urgencyNote);
+                    localStorage.setItem('wheelPlayed', 'true');
+                    return;
                 } else {
                     let newPrice = '';
                     if (currentPrize === '-10€/mois') newPrice = '25€/mois';
                     else if (currentPrize === '-20€/mois') newPrice = '15€/mois';
-                    else if (currentPrize === '-15€/mois') newPrice = '20€/mois';
+                    else if (currentPrize === '-50€/mois') newPrice = '20€/mois';
 
                     const prizeDescription = '<span class="prize-note">Valable sur :<br>• Suivi mensuel site vitrine<br>• Suivi mensuel site e-commerce<br>• Suivi mensuel site booking<br><br>Au lieu de 35€/mois → <strong>' + newPrice + '</strong></span>';
                     prizeText.innerHTML = 'Vous avez gagné : ' + currentPrize + prizeDescription;
